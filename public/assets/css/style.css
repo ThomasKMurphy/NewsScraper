@@ -1,39 +1,49 @@
 body {
-  background-color: #F2F6D0;
+  background-color: lightgray;
+}
+
+h1 {
+
 }
 
 #wrapper {
-  width: 960px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 5%;
+  width: px;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding-top: 10px;
 }
 
 #articles {
   display: inline-block;
   overflow: auto;
-  width: 60%;
-  height: 700px;
+  width: 65%;
+  height: 400px;
 }
 
 #notes {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 15px;
+  text-align: center;
+  padding: 10px;
   float: right;
   width: 30%;
+  outline: solid black 1px;
+  background-color: #4df164
 }
 
 textarea,
 input {
   display: block;
   width: 100%;
-  background-color: #FCF5C7;
+  background-color: gray;
 }
 
 input {
-  height: 36px;
-  font-size: 24px;
+  height: 25px;
+  font-size: 14px;
 }
 
 textarea {
-  height: 200px;
-  font-size: 18px;
+  height: 150px;
+  font-size: 14px;
 }

@@ -32,7 +32,7 @@ $(document).on("click", "p", function() {
       if (data.note) {
         // Place the title of the note in the title input
         $("#titleinput").val(data.note.title);
-        // Place the body of the note in the body textarea
+        // Place the body of the note in the body text area
         $("#bodyinput").val(data.note.body);
       }
     });
