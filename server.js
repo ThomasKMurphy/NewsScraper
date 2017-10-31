@@ -28,6 +28,7 @@ mongoose.Promise = Promise;
 mongoose.connect("mongodb://localhost/mmaScraper", {
   useMongoClient: true
 });
+// mongoose.connect('mongodb://heroku_rr9mt9w0:r7hanmh4fgkrr2kdmm78lro9h0@ds125565.mlab.com:25565/heroku_rr9mt9w0');
 
 // Main route
 app.get('/', function(req, res) {
