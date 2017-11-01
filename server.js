@@ -25,6 +25,7 @@ app.use(express.static("public"));
 
 
 // Connect to MongoDB
+
 // mongoose.Promise = Promise;
 // mongoose.connect("mongodb://localhost/mmaScraper", {
 //   useMongoClient: true
@@ -32,14 +33,14 @@ app.use(express.static("public"));
 
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://heroku_rr9mt9w0:r7hanmh4fgkrr2kdmm78lro9h0@ds125565.mlab.com:25565/heroku_rr9mt9w0");
-var database = mongoose.connection;
+// var database = mongoose.connection;
 
-database.on("error", function(error) {
-  console.log("Mongoose Error: ", error);
-});
-database.once("open", function() {
-  console.log("Mongoose connection successful");
-});
+// database.on("error", function(error) {
+//   console.log("Mongoose Error: ", error);
+// });
+// database.once("open", function() {
+//   console.log("Mongoose connection successful");
+// });
 
 
 // Main route
