@@ -23,24 +23,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Use express.static to serve the public folder as a static directory
 app.use(express.static("public"));
 
+
 // Connect to MongoDB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/mmaScraper", {
+// mongoose.connect("mongodb://localhost/mmaScraper", {
+//   useMongoClient: true
+mongoose.connect("mongodb://heroku_rr9mt9w0:r7hanmh4fgkrr2kdmm78lro9h0@ds125565.mlab.com:25565/heroku_rr9mt9w0", {
   useMongoClient: true
 });
 
 
-// var database = mongoose.connection;
-// // Show any mongoose errors
-// database.on("error", function(error) {
-//   console.log("Mongoose Error: ", error);
-// });
-// database.once("open", function() {
-//   console.log("Mongoose connection successful.");
-// });
-
-
-// mongoose.connect('mongodb://heroku_rr9mt9w0:r7hanmh4fgkrr2kdmm78lro9h0@ds125565.mlab.com:25565/heroku_rr9mt9w0');
+var database = mongoose.connection;
+// Show any mongoose errors
+database.on("error", function(error) {
+  console.log("Mongoose Error: ", error);
+});
+database.once("open", function() {
+  console.log("Mongoose connection successful.");
+});
 
 
 // Main route
