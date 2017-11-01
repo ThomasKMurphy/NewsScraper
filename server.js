@@ -9,9 +9,7 @@ var axios = require('axios');
 var cheerio = require('cheerio');
 
 // Require models
-// var db = require('./models');
-var Article = require("./models/Article.js");
-var Note = require("./models/Note.js");
+var db = require('./models');
 
 var PORT = process.env.PORT || 3000;
 
@@ -34,12 +32,12 @@ app.use(express.static("public"));
 
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://heroku_rr9mt9w0:r7hanmh4fgkrr2kdmm78lro9h0@ds125565.mlab.com:25565/heroku_rr9mt9w0");
-var db = mongoose.connection;
+var database = mongoose.connection;
 
-db.on("error", function(error) {
+database.on("error", function(error) {
   console.log("Mongoose Error: ", error);
 });
-db.once("open", function() {
+database.once("open", function() {
   console.log("Mongoose connection successful");
 });
 
