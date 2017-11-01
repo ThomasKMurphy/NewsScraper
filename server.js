@@ -28,7 +28,20 @@ mongoose.Promise = Promise;
 mongoose.connect("mongodb://localhost/mmaScraper", {
   useMongoClient: true
 });
+
+
+// var database = mongoose.connection;
+// // Show any mongoose errors
+// database.on("error", function(error) {
+//   console.log("Mongoose Error: ", error);
+// });
+// database.once("open", function() {
+//   console.log("Mongoose connection successful.");
+// });
+
+
 // mongoose.connect('mongodb://heroku_rr9mt9w0:r7hanmh4fgkrr2kdmm78lro9h0@ds125565.mlab.com:25565/heroku_rr9mt9w0');
+
 
 // Main route
 app.get('/', function(req, res) {
@@ -67,17 +80,21 @@ app.get('/scrape', function(req, res) {
         .children('a')
         .attr('href');
 
+        console.log(result);
+
       // Create a new Article using the `result` object built from scraping
       db.Article
         .create(result)
         .then(function(dbArticle) {
-          res.send("MMA Scrape Complete");
+          res.send("MMA Scrape Complete"+ dbArticle );
         })
         .catch(function(err) {
           res.json(err);
         });
     });
-  });
+  }); // end each loop
+
+  res.send("MMA Scrape Complete" );
 });
 
 // Route for grabbing a specific Article by id, populate it with it's note
