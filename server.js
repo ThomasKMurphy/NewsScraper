@@ -9,7 +9,7 @@ var axios = require('axios');
 var cheerio = require('cheerio');
 
 // Require models
-var db = require('/models');
+var model = require('./models');
 
 var PORT = process.env.PORT || 3000;
 
@@ -33,12 +33,12 @@ app.use(express.static("public"));
 
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://heroku_rr9mt9w0:r7hanmh4fgkrr2kdmm78lro9h0@ds125565.mlab.com:25565/heroku_rr9mt9w0");
-var database = mongoose.connection;
+// var db = mongoose.connection;
 
-// database.on("error", function(error) {
+// db.on("error", function(error) {
 //   console.log("Mongoose Error: ", error);
 // });
-// database.once("open", function() {
+// db.once("open", function() {
 //   console.log("Mongoose connection successful");
 // });
 
@@ -50,7 +50,7 @@ app.get('/', function(req, res) {
 
 // Retrieve data from the database
 app.get("/articles", function(req, res) {
-  db.Article
+  model.Article
     .find({})
     .then(function(dbArticle) {
       res.json(dbArticle);
@@ -83,7 +83,7 @@ app.get('/scrape', function(req, res) {
         console.log(result);
 
       // Create a new Article using the `result` object built from scraping
-      db.Article
+      model.Article
         .create(result)
         .then(function(dbArticle) {
           res.send("MMA Scrape Complete"+ dbArticle );
@@ -99,7 +99,7 @@ app.get('/scrape', function(req, res) {
 
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function(req, res) {
-  db.Article
+  model.Article
     .findOne({ _id: req.params.id })
     .populate("note")
     .then(function(dbArticle) {
@@ -113,10 +113,10 @@ app.get("/articles/:id", function(req, res) {
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
-  db.Note
+  model.Note
     .create(req.body)
     .then(function(dbNote) {
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+      return model.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
     })
     .then(function(dbArticle) {
       res.json(dbArticle);
