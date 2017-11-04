@@ -9,7 +9,7 @@ var axios = require('axios');
 var cheerio = require('cheerio');
 
 // Require models
-var db = require('./models');
+var db = require('./models/index');
 
 var PORT = process.env.PORT || 3000;
 
@@ -25,7 +25,6 @@ app.use(express.static("public"));
 
 
 // Connect to MongoDB
-
 // mongoose.Promise = Promise;
 // mongoose.connect("mongodb://localhost/mmaScraper", {
 //   useMongoClient: true
@@ -33,6 +32,7 @@ app.use(express.static("public"));
 
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://heroku_rr9mt9w0:r7hanmh4fgkrr2kdmm78lro9h0@ds125565.mlab.com:25565/heroku_rr9mt9w0");
+
 // var database = mongoose.connection;
 
 // database.on("error", function(error) {
@@ -44,32 +44,31 @@ mongoose.connect("mongodb://heroku_rr9mt9w0:r7hanmh4fgkrr2kdmm78lro9h0@ds125565.
 
 
 // Main route
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.send('MMA News Scraper');
 });
 
 // Retrieve data from the database
-app.get("/articles", function(req, res) {
+app.get("/articles", function (req, res) {
   db.Article
     .find({})
-    .then(function(dbArticle) {
+    .then(function (dbArticle) {
       res.json(dbArticle);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       res.json(err);
     });
 });
 
 // GET route for scraping
-app.get('/scrape', function(req, res) {
+app.get('/scrape', function (req, res) {
   // Make a request for the news
-  axios.get('https://www.mmafighting.com/latest-news').then(function(response) {
+  axios.get('https://www.mmafighting.com/latest-news').then(function (response) {
     // Load the html body from request into cheerio
     var $ = cheerio.load(response.data);
 
     // For each element with a 'title' class
-    $('.c-entry-box--compact__title').each(function(i, element) {
-
+    $('.c-entry-box--compact__title').each(function (i, element) {
       var result = {};
 
       // Add the text and href of every link, and save them as properties of the result object
@@ -80,52 +79,52 @@ app.get('/scrape', function(req, res) {
         .children('a')
         .attr('href');
 
-        console.log(result);
+      console.log(result);
 
       // Create a new Article using the `result` object built from scraping
       db.Article
         .create(result)
-        .then(function(dbArticle) {
-          res.send("MMA Scrape Complete"+ dbArticle );
+        .then(function (dbArticle) {
+          res.send("MMA Scrape Complete" + dbArticle);
         })
-        .catch(function(err) {
+        .catch(function (err) {
           res.json(err);
         });
     });
   }); // end each loop
 
-  res.send("MMA Scrape Complete" );
+  res.send("MMA Scrape Complete");
 });
 
 // Route for grabbing a specific Article by id, populate it with it's note
-app.get("/articles/:id", function(req, res) {
+app.get("/articles/:id", function (req, res) {
   db.Article
     .findOne({ _id: req.params.id })
     .populate("note")
-    .then(function(dbArticle) {
+    .then(function (dbArticle) {
       res.json(dbArticle);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       res.json(err);
     });
 });
 
 // Route for saving/updating an Article's associated Note
-app.post("/articles/:id", function(req, res) {
+app.post("/articles/:id", function (req, res) {
   // Create a new note and pass the req.body to the entry
   db.Note
     .create(req.body)
-    .then(function(dbNote) {
+    .then(function (dbNote) {
       return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
     })
-    .then(function(dbArticle) {
+    .then(function (dbArticle) {
       res.json(dbArticle);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       res.json(err);
     });
 });
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log('App running on port ' + PORT);
 });
