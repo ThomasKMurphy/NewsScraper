@@ -9,7 +9,7 @@ var axios = require('axios');
 var cheerio = require('cheerio');
 
 // Require models
-var db = require('./models/index');
+var Article = require('./models/Article');
 
 var PORT = process.env.PORT || 3000;
 
@@ -50,7 +50,7 @@ app.get('/', function (req, res) {
 
 // Retrieve data from the database
 app.get("/articles", function (req, res) {
-  db.Article
+  Article
     .find({})
     .then(function (dbArticle) {
       res.json(dbArticle);
